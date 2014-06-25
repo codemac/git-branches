@@ -1,0 +1,13 @@
+#!/bin/bash
+
+LOCAL_BRANCHES=$(git branch | xargs | sed 's/\* //')
+HEAD_TO_CHECK="master"
+BRANCHES=($(echo $LOCAL_BRANCHES | sed "s/${HEAD_TO_CHECK}\s*//"))
+
+for i in "${BRANCHES[@]}"
+do
+    echo -e "\033[4m${i}\033[0m"
+    git log --graph --pretty=tformat:'%Creset%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative ${HEAD_TO_CHECK}..$i
+    echo
+done
+
